@@ -26,3 +26,15 @@
 *.exe
 *.out
 *.app
+
+\.vs/QuadrInoFly/v15/
+
+__vm/
+
+Debug/
+
+*.sln
+
+*.vcxproj
+
+*.filters
