@@ -7,6 +7,7 @@
 #include <Servo.h>
 #include <SPI.h>
 #include <Wire.h>
+#include <WString.h>
 
 #include "Adafruit_Sensor.h"
 #include "Adafruit_LSM9DS0.h"
@@ -16,14 +17,10 @@
 #include "Timer.h"
 #include "PID.h"
 #include "process.h"
+#include "serialRcver.h"
+#include "callBackFunction.h"
 
-/******************Global Variable*************/
-
-/*
-*	limited between 1100 <-> 2000
-*	actualy assign in "process.h"
-*/
-extern short genMotorSpeed;
+#define SW_VERSION "0.0.9"
 
 #endif //_DEFINE_h
 

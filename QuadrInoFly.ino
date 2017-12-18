@@ -5,8 +5,10 @@ Insert information about licence
 
 #include "Define.h"
 
-/*******************Variable******************/
+/***************Prepocessor*******************/
 
+
+/*******************Variable******************/
 byte varCompteur = 0; // cout var for ISR
 
 unsigned long currentMillis = 0;
@@ -25,7 +27,7 @@ void setup()
 	SensorInit();
 	
 	/*Timer2 config*/
-    //Timer2Config();	
+    Timer2Config();	
 	
 }
 
@@ -54,16 +56,16 @@ void loop()
 	
 }
 
-
-//*Reserve interrupt routine service (ISR) by Arduino
-//*/
-//ISR(TIMER2_OVF_vect)
-//{
-//	TCNT2 = 256 - 250; // 250 x 16 µS = 4 ms
-//	if (varCompteur++ > 25)// 25 * 4 ms = 100 ms (half-period)
-//	{
-//		varCompteur = 0;
-//		//Serial.println("debugFromISR");
-//		SensorGet(pX, pY, time);//Feed gyro circular buffers
-//	}
-//}
+/*
+*Reserve interrupt routine service (ISR) by Arduino
+*/
+ISR(TIMER2_OVF_vect)
+{
+	TCNT2 = 256 - 250; // 250 x 16 µS = 4 ms
+	if (varCompteur++ > 25)// 25 * 4 ms = 100 ms (half-period)
+	{
+		varCompteur = 0;
+		//Serial.println("debugFromISR");
+		serialAnalyser();
+	}
+}

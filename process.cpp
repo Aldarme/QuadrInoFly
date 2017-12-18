@@ -16,7 +16,15 @@ short genMotorSpeed = 1200;
 /********************Function*******************/
 
 /*
-* Set motor speed, based on value return by gyro sensor
+*	Set general motor speed, based on value return by controller
+*/
+void setGenSpeed(int pSpeed)
+{
+	genMotorSpeed = float(pSpeed);
+}
+
+/*
+*	Set motor speed, based on value return by gyro sensor
 */
 void setSpeedMotors()
 {
@@ -32,6 +40,39 @@ void setSpeedMotors()
 		
 	}
 	else 
+	{
+		setSpeedC(checkSpeedSupp(genMotorSpeed, controllerP(pRollX)));
+		setSpeedD(checkSpeedAdd(genMotorSpeed, controllerP(pRollX)));
+	}
+
+	if (*pPitchY < 0)
+	{
+		setSpeedA(checkSpeedSupp(genMotorSpeed, controllerP(pPitchY)));
+		setSpeedB(checkSpeedAdd(genMotorSpeed, controllerP(pPitchY)));
+	}
+	else {
+		setSpeedA(checkSpeedSupp(genMotorSpeed, controllerP(pPitchY)));
+		setSpeedB(checkSpeedAdd(genMotorSpeed, controllerP(pPitchY)));
+	}
+}
+
+/*
+*	Controller set motor speed (based on value return by controller, in our case "XBOX controller"
+*/
+void setSpeedMotors(float pControllerPitch, float pControllerRoll )
+{
+	*pRollX = pControllerRoll;
+	*pPitchY = pControllerPitch;
+
+	//controllerP(pRollX);
+
+	if (*pRollX < 0)
+	{
+		setSpeedC(checkSpeedSupp(genMotorSpeed, controllerP(pRollX)));
+		setSpeedD(checkSpeedAdd(genMotorSpeed, controllerP(pRollX)));
+
+	}
+	else
 	{
 		setSpeedC(checkSpeedSupp(genMotorSpeed, controllerP(pRollX)));
 		setSpeedD(checkSpeedAdd(genMotorSpeed, controllerP(pRollX)));
