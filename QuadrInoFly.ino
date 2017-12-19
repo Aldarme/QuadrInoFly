@@ -18,7 +18,7 @@ const long interval = 10; //time period to get value fron sensor in millisecond
 void setup()
 {
 	/*Init serial com at 9600 Baud*/
-	Serial.begin(9600);	
+	Serial.begin(115200);	
 
 	/*Motor configuration*/
 	configMotor();
@@ -35,7 +35,7 @@ void loop()
 {
 	//Returns the number of milliseconds since the Arduino board began running the current program.
 	currentMillis = millis();
-
+	
 	//set Motors speed, depending on values return gy Gyro
 	setSpeedMotors();
 
@@ -46,13 +46,16 @@ void loop()
 
 		//get data from sensor (gyro)
 		SensorGet();
-
-		//get data from controller
-	    serialAnalyser();
 	 }
 }
 
-
+void serialEvent() {
+	while (Serial.available())
+	{
+		//get data from controller
+		serialAnalyser();
+	}
+}
 
 /*
 *Reserve interrupt routine service (ISR) by Arduino

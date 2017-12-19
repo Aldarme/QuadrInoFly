@@ -11,7 +11,9 @@ float PitchY;
 float * pRollX = &RollX;
 float * pPitchY = &PitchY;
 
-short genMotorSpeed = 1200;
+//1100 -> motor activate, no rotation
+//2000 -> motor activate, max speed
+int genMotorSpeed = 1100;
 
 /********************Function*******************/
 
@@ -20,7 +22,8 @@ short genMotorSpeed = 1200;
 */
 void setGenSpeed(int pSpeed)
 {
-	genMotorSpeed = float(pSpeed);
+	genMotorSpeed = pSpeed;
+	setSpeedGlobal(genMotorSpeed);
 }
 
 /*
@@ -89,7 +92,7 @@ void setSpeedMotors(float pControllerPitch, float pControllerRoll )
 	}
 }
 
-short checkSpeedAdd(short pGlobSpeed, short pGyroSpeed)
+int checkSpeedAdd(int pGlobSpeed, int pGyroSpeed)
 {
 	if ((pGlobSpeed + pGyroSpeed) > 2000)
 	{
@@ -98,7 +101,7 @@ short checkSpeedAdd(short pGlobSpeed, short pGyroSpeed)
 	return (pGlobSpeed + pGyroSpeed);
 }
 
-short checkSpeedSupp(short pGlobSpeed, short pGyroSpeed)
+int checkSpeedSupp(int pGlobSpeed, int pGyroSpeed)
 {
 	if ((pGlobSpeed - pGyroSpeed) < 1100)
 	{

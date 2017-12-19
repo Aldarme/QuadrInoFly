@@ -7,8 +7,8 @@ void setGenSpeed(int pSpeed);
 void setSpeedMotors();
 void setSpeedMotors(float pControllerPitch, float pControllerRoll);
 
-short checkSpeedAdd(short pGlobSpeed, short pGyroSpeed);
-short checkSpeedSupp(short pGlobSpeed, short pGyroSpeed);
+int checkSpeedAdd(int pGlobSpeed, int pGyroSpeed);
+int checkSpeedSupp(int pGlobSpeed, int pGyroSpeed);
 
 #endif //_PROCESS_h
 

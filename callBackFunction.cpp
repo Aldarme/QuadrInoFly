@@ -19,7 +19,7 @@ static void PrintToSerial(String pString)
 */
 void throttleCb(int pThrottle)
 {
-	int throttle = map(pThrottle, -32768, 32767, 1200, 1500);
+	int throttle = map(pThrottle, -32767, 32768, 1100, 2000);
 	setGenSpeed(throttle);
 }
 
@@ -44,7 +44,7 @@ void RollCb(int pRoll)
 /*
 *	send current software version throught serial com
 */
-void VersionCb(int)
+void VersionCb(int a)
 {
 	PrintToSerial(SW_VERSION);
 }
