@@ -27,7 +27,7 @@ void setup()
 	SensorInit();
 	
 	/*Timer2 config*/
-    Timer2Config();	
+    //Timer2Config();	
 	
 }
 
@@ -45,27 +45,25 @@ void loop()
 		previousMillis = currentMillis;
 
 		//get data from sensor (gyro)
-		SensorGet();		
+		SensorGet();
+
+		//get data from controller
+	    serialAnalyser();
 	 }
-
-	
-
-	
-	
-	
-	
 }
+
+
 
 /*
 *Reserve interrupt routine service (ISR) by Arduino
 */
-ISR(TIMER2_OVF_vect)
-{
-	TCNT2 = 256 - 250; // 250 x 16 µS = 4 ms
-	if (varCompteur++ > 25)// 25 * 4 ms = 100 ms (half-period)
-	{
-		varCompteur = 0;
-		//Serial.println("debugFromISR");
-		serialAnalyser();
-	}
-}
+//ISR(TIMER2_OVF_vect)
+//{
+//	TCNT2 = 256 - 250; // 250 x 16 µS = 4 ms
+//	if (varCompteur++ > 25)// 25 * 4 ms = 100 ms (half-period)
+//	{
+//		varCompteur = 0;
+//		//Serial.println("debugFromISR");
+//		serialAnalyser();
+//	}
+//}

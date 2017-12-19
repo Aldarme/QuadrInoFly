@@ -70,7 +70,7 @@ void SensorInit()
 		while(1);
     }
 
-    Serial.println(F("Found LSM9DS0 9DOF\r\n"));
+    Serial.println("Found LSM9DS0 9DOF\r\n");
 
     /* Setup the sensor gain and integration time */
     SensorSensitivityConf();	

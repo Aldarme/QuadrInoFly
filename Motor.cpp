@@ -1,6 +1,14 @@
+/****************************************************
 
+Use Default connection for I2C:
+Connect Motor A to pin 6
+Connect Motor B to pin 5
+Connect Motor C to pin 10
+Connect Motor D to pin 9
+****************************************************/
 
 #include "Define.h"
+
 /******************Preprocessor****************/
 
 

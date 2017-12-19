@@ -19,7 +19,8 @@ static void PrintToSerial(String pString)
 */
 void throttleCb(int pThrottle)
 {
-	setGenSpeed(pThrottle);
+	int throttle = map(pThrottle, -32768, 32767, 1200, 1500);
+	setGenSpeed(throttle);
 }
 
 /*
@@ -27,7 +28,8 @@ void throttleCb(int pThrottle)
 */
 void PitchCb(int pPtich)
 {
-	setSpeedMotors(float(pPtich), 0.0f);
+	int pitch = map(pPtich, -32768, 32767, 0, 200);
+	setSpeedMotors(float(pitch), 0.0f);
 }
 
 /*
@@ -35,7 +37,8 @@ void PitchCb(int pPtich)
 */
 void RollCb(int pRoll)
 {
-	setSpeedMotors(0.0f, float(pRoll));
+	int roll = map(pRoll, -32768, 32767, 0, 200);
+	setSpeedMotors(0.0f, float(roll));
 }
 
 /*

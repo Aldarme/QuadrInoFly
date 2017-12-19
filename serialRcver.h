@@ -12,7 +12,7 @@ struct cmd_t
 	void(*cb)(int);
 };
 
-int serialAnalyser();
+void serialAnalyser();
 
 #endif //_SERIALRCVER_h
 
