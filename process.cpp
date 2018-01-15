@@ -5,6 +5,9 @@
 #include "Define.h"
 
 /******************Variable***********************/
+#define INTERVAL	10		//time period to get value fron sensor in millisecond
+#define INTERVAL_RF	100		//time period to get value fron RF controller in millisecond
+
 float RollX;
 float PitchY;
 
@@ -73,7 +76,6 @@ void setSpeedMotors(float pControllerPitch, float pControllerRoll )
 	{
 		setSpeedC(checkSpeedSupp(genMotorSpeed, controllerP(pRollX)));
 		setSpeedD(checkSpeedAdd(genMotorSpeed, controllerP(pRollX)));
-
 	}
 	else
 	{
@@ -108,4 +110,25 @@ int checkSpeedSupp(int pGlobSpeed, int pGyroSpeed)
 		return (1100);
 	}
 	return (pGlobSpeed - pGyroSpeed);
+}
+
+/*
+*	Return time period to get value fron sensor in millisecond
+*/
+unsigned long getInterval()
+{
+	return INTERVAL;
+}
+
+/*
+*	Return time period to get value fron RF controller in millisecond
+*/
+unsigned long getIntervalRf()
+{
+	return INTERVAL_RF;
+}
+
+short getGenMotorSpeed()
+{
+	return genMotorSpeed;
 }
