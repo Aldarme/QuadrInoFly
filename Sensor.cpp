@@ -14,8 +14,10 @@ Use Default connection for I2C:
 
 /*******************preprocessor******************/
 
-#define TABGYROXSIZE 30
-#define TABGYROYSIZE 30
+#define TABANGVELGYROXSIZE 10	//size of Angular velocity tabs
+#define TABANGVELGYROYSIZE 10
+#define TABANGPOSGYROXSIZE 10	//size of Angular position tabs
+#define TABANGPOSGYROYSIZE 10
 
 
 /*******************Variable******************/
@@ -23,12 +25,19 @@ Use Default connection for I2C:
 	/* Assign a unique base ID for this sensor */
 	Adafruit_LSM9DS0 lsm = Adafruit_LSM9DS0(1000);  // Use I2C, ID #1000
 
-	/* 20 elements -> 200 ms to fill the array*/
-	float tabGyroX[TABGYROXSIZE] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-									 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+	/* Array of Angular velocity
+	 * 20 elements -> 200 ms to fill the array
+	 */
+	float tabAngVelGyroX[TABANGVELGYROXSIZE] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 	
-	float tabGyroY[TABGYROYSIZE] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-									 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+	float tabAngVelGyroY[TABANGVELGYROYSIZE] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+
+	/* Array of Angular position
+	* 20 elements -> 200 ms to fill the array
+	*/
+	float tabAngPosGyroX[TABANGPOSGYROXSIZE] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+
+	float tabAngPosGyroY[TABANGPOSGYROYSIZE] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
 /*******************Function******************/
 /*
@@ -125,13 +134,17 @@ void GiroX_Feed(float pX)
 {
 	static short index = 0;
 
-	if (index >= (TABGYROXSIZE-1))
+	if (index >= (TABANGVELGYROXSIZE-1))
 	{
 		index = 0;
 	}
-
-	tabGyroX[index] = pX;
-	index++;
+	if (pX != 0.0)
+	{
+		tabAngVelGyroX[index] = pX;
+		tabAngPosGyroX[index] = tabAngVelGyroX[index] / getInterval();
+		index++;
+	}
+	
 }
 
 /*
@@ -140,7 +153,7 @@ void GiroX_Feed(float pX)
 */
 float GiroX_Read()
 {
-	return (avrgTab(tabGyroX, TABGYROXSIZE));
+	return (avrgTab(tabAngPosGyroX, TABANGVELGYROXSIZE));
 
 	/*short index = 0;
 
@@ -158,13 +171,17 @@ void GiroY_Feed(float pY)
 {
 	static short index = 0;
 
-	if (index >= (TABGYROYSIZE - 1))
+	if (index >= (TABANGVELGYROYSIZE - 1))
 	{
 		index = 0;
 	}
 
-	tabGyroY[index] = pY;
-	index++;
+	if (pY != 0.0)
+	{
+		tabAngVelGyroY[index] = pY;
+		tabAngPosGyroY[index] = tabAngVelGyroY[index] / getInterval();
+		index++;
+	}	
 }
 
 /*
@@ -173,7 +190,7 @@ void GiroY_Feed(float pY)
 */
 float GiroY_Read()
 {
-	return (avrgTab(tabGyroY, TABGYROYSIZE));
+	return (avrgTab(tabAngPosGyroY, TABANGVELGYROYSIZE));
 }
 
 /*
