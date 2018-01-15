@@ -2,23 +2,11 @@
 #include "Define.h"
 
 /*--------------Preprocessor---------*/
-#define KP_X 1
-#define KI_X 0
-#define KD_X 0
-
-#define KP_Y 0
-#define KI_Y 0
-#define KD_Y 0
+#define KP 1
+#define KI 0.5
+#define KD 0.2
 
 #define deposit 0
-
-/*-----------------Variable----------*/
-
-float X_sum = 0;
-float Y_sum = 0;
-float * pX_sum = &X_sum;
-float * pY_sum = &Y_sum;
-
 
 /*------------Function---------------*/
 
@@ -28,7 +16,7 @@ float * pY_sum = &Y_sum;
 */
 short controllerP(float * pDatasensor)
 {
-	short P = (short)((deposit - *pDatasensor) * KP_X);
+	short P = (short)((deposit - *pDatasensor) * KP);
 	//Serial.println(P);
 	return P;
 	
@@ -43,10 +31,23 @@ short controllerP(float * pDatasensor)
 *	Controller PI
 *	return type: Short
 */
-short controllerPI(float * pDatasensor)
+short controllerPI(float * pDatasensor, float pTabSum)
 {
-	*pX_sum += *pDatasensor; //ask if it is a better idea to calcule integral on the 5 last value
-	return (short)( ((deposit - *pDatasensor) * KP_X) + (*pX_sum * KI_X) );
+	return (short)( ((deposit - *pDatasensor) * KP)
+					+ (pTabSum * KI) );
 }
+
+/*
+*	Controller PID
+*	return type: Short
+*/
+short controllerPID(float * pDatasensor, float pTabSum)
+{
+	return (short)(((deposit - *pDatasensor) * KP)
+					+ (pTabSum * KI)
+					+ (getInterval() * KD) );
+}
+
+
 
 
