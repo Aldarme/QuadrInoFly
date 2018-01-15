@@ -19,13 +19,13 @@ void AxeThrottle(int pinCanal)
 	pinMode(throttlePin, INPUT);
 }
 
-void AxePitch(int pinCanal, int minVal, int maxVal)
+void AxePitch(int pinCanal)
 {
 	pitchPin = pinCanal;
 	pinMode(pitchPin, INPUT);
 }
 
-void AxeRoll(int pinCanal, int minVal, int maxVal)
+void AxeRoll(int pinCanal)
 {
 	rollPin = pinCanal;
 	pinMode(rollPin, INPUT);
@@ -35,39 +35,61 @@ int readThrottle()
 {
 	throttleRead = pulseIn(throttlePin, HIGH, PERIODE);
 	return map(throttleRead, 1000, 2000, 1100, 2000);
-	/*if (throttleRead > PWM_MIN && throttleRead < PWM_MAX)
-	{		
-		return throttleRead;
-	}
-	else
-	{
-		return 1;
-	}*/
 }
 
 int readPitch()
 {
 	pitchRead = pulseIn(pitchPin, HIGH, PERIODE);
-	if (pitchRead > PWM_MIN && pitchRead < PWM_MAX)
+	short temp = map(pitchRead, 1000, 2000, 1100, 2000);
+	if (temp >= 1550)
 	{
-		return pitchRead;
+		short vPitch = 0;
+		vPitch = map(temp, 1550, 2000, 1100, 2000);
+
+		setSpeedA(checkSpeedSupp(getGenMotorSpeed(), vPitch));
+		setSpeedC(checkSpeedSupp(getGenMotorSpeed(), vPitch));
+
+		setSpeedB(checkSpeedAdd(getGenMotorSpeed(), vPitch));
+		setSpeedD(checkSpeedAdd(getGenMotorSpeed(), vPitch));
 	}
 	else
 	{
-		return 1;
+		short vPitch = 0;
+		vPitch = map(temp, 1550, 1100, 1100, 2000);
+
+		setSpeedB(checkSpeedSupp(getGenMotorSpeed(), vPitch));
+		setSpeedD(checkSpeedSupp(getGenMotorSpeed(), vPitch));
+
+		setSpeedA(checkSpeedAdd(getGenMotorSpeed(), vPitch));
+		setSpeedC(checkSpeedAdd(getGenMotorSpeed(), vPitch));
 	}
 }
 
 int readRoll()
 {
 	rollRead = pulseIn(rollPin, HIGH, PERIODE);
-	if (rollRead > PWM_MIN && rollRead < PWM_MAX)
+	int temp = map(rollRead, 1000, 2000, 1100, 2000);
+	if (temp >= 1550)
 	{
-		return rollRead;
+		short vRoll = 0;
+		vRoll = map(temp, 1550, 2000, 1100, 2000);
+
+		setSpeedA(checkSpeedSupp(getGenMotorSpeed(), vRoll));
+		setSpeedD(checkSpeedSupp(getGenMotorSpeed(), vRoll));
+
+		setSpeedB(checkSpeedAdd(getGenMotorSpeed(), vRoll));
+		setSpeedC(checkSpeedAdd(getGenMotorSpeed(), vRoll));
 	}
 	else
 	{
-		return 1;
+		short vRoll = 0;
+		vRoll = map(temp, 1550, 2000, 1100, 2000);
+
+		setSpeedB(checkSpeedSupp(getGenMotorSpeed(), vRoll));
+		setSpeedC(checkSpeedSupp(getGenMotorSpeed(), vRoll));
+
+		setSpeedA(checkSpeedAdd(getGenMotorSpeed(), vRoll));
+		setSpeedD(checkSpeedAdd(getGenMotorSpeed(), vRoll));
 	}
 }
 
