@@ -9,16 +9,24 @@ Insert information about licence
 
 
 /*******************Variable******************/
-byte varCompteur = 0; // cout var for ISR
+const byte ledPin = 13;
+const byte interruptPin = 2;
+volatile byte state = LOW;
+
+//byte varCompteur = 0; // cout var for ISR
 
 unsigned long currentMillis = 0;
-unsigned long previousMillis = 0;;
-const long interval = 10; //time period to get value fron sensor in millisecond
+unsigned long previousMillis = 0;
+//const long interval = 10; //time period to get value fron sensor in millisecond
+
+unsigned long currentMillisRF = 0;
+unsigned long previousMillisRF = 0;
+//const long intervalRF = 100; //time period to get value fron RF controller in millisecond
 
 void setup()
 {
 	/*Init serial com at 9600 Baud*/
-	Serial.begin(115200);	
+	Serial.begin(9600);	
 
 	/*Motor configuration*/
 	configMotor();
@@ -27,7 +35,12 @@ void setup()
 	SensorInit();
 	
 	/*Timer2 config*/
-    //Timer2Config();	
+    //Timer2Config();
+
+	/*RF Throttle Config*/
+	AxeThrottle(4);	//declare throttle on PIN4
+	AxePitch(3);
+	AxeRoll(2);
 	
 }
 
@@ -35,11 +48,12 @@ void loop()
 {
 	//Returns the number of milliseconds since the Arduino board began running the current program.
 	currentMillis = millis();
+	currentMillisRF = currentMillis;
 	
 	//set Motors speed, depending on values return gy Gyro
 	setSpeedMotors();
 
-	if (currentMillis - previousMillis >= interval)
+	if(currentMillis - previousMillis >= getInterval())
 	{
 		//save the last time you blinked the LED
 		previousMillis = currentMillis;
@@ -47,15 +61,30 @@ void loop()
 		//get data from sensor (gyro)
 		SensorGet();
 	 }
-}
 
-void serialEvent() {
-	while (Serial.available())
+	if(currentMillisRF - previousMillisRF >= getIntervalRf())
 	{
-		//get data from controller
-		serialAnalyser();
+		previousMillisRF = currentMillisRF;
+
+		/*Serial.println("throttle input: ");
+		Serial.println(i);*/
+		setGenSpeed(readThrottle());
+		readPitch();
+		readRoll();
 	}
 }
+
+
+
+/*
+Serial Read Pin INPUT interrupt*/
+//void serialEvent() {
+//	while (Serial.available())
+//	{
+//		//get data from controller
+//		serialAnalyser();
+//	}
+//}
 
 /*
 *Reserve interrupt routine service (ISR) by Arduino
