@@ -19,8 +19,10 @@
 #include "process.h"
 #include "serialRcver.h"
 #include "callBackFunction.h"
+#include "RfReader.h"
 
-#define SW_VERSION "0.0.9"
+#define SW_VERSION "0.1.0"
+
 
 #endif //_DEFINE_h
 
